@@ -14,6 +14,8 @@ import (
 type OperatorService interface {
 	Create(ctx context.Context, request web.OperatorCreateRequest) string
 	FindAll(ctx context.Context) []domain.OperatorSchema
+	ResetPassword(ctx context.Context, request string) string
+	Destroy(ctx context.Context, request string) string
 }
 
 type OperatorServiceImpl struct {
@@ -40,7 +42,7 @@ func (service *OperatorServiceImpl) Create(ctx context.Context, request web.Oper
 		Password: request.Password,
 	}
 
-	err = service.OperatorRepository.Save(ctx, service.Db, operatorPayload)
+	service.OperatorRepository.Save(ctx, service.Db, operatorPayload)
 	helper.PanicIfError(err)
 	return "Success create new account"
 }
@@ -48,4 +50,14 @@ func (service *OperatorServiceImpl) Create(ctx context.Context, request web.Oper
 func (service *OperatorServiceImpl) FindAll(ctx context.Context) []domain.OperatorSchema {
 	result := service.OperatorRepository.FindAll(ctx, service.Db)
 	return result
+}
+
+func (service *OperatorServiceImpl) ResetPassword(ctx context.Context, request string) string {
+	service.OperatorRepository.ResetPasswordById(ctx, service.Db, request)
+	return "Success reset password"
+}
+
+func (service *OperatorServiceImpl) Destroy(ctx context.Context, request string) string {
+	service.OperatorRepository.Destroy(ctx, service.Db, request)
+	return "Success delete account"
 }

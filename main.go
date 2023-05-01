@@ -24,6 +24,8 @@ func main() {
 
 	router.GET("/api/v1/account", operatorController.FindAll)
 	router.POST("/api/v1/account", operatorController.Create)
+	router.PATCH("/api/v1/account/:accountId", operatorController.ResetPassword)
+	router.DELETE("/api/v1/account/:accountId", operatorController.Destroy)
 
 	server := http.Server{
 		Addr:    "localhost:3000",

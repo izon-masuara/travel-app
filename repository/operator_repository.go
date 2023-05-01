@@ -6,12 +6,15 @@ import (
 	"kautsar/travel-app-api/helper"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type OperatorRepository interface {
-	Save(ctx context.Context, db *mongo.Database, operator domain.OperatorCreate) error
+	Save(ctx context.Context, db *mongo.Database, operator domain.OperatorCreate)
 	FindAll(ctx context.Context, db *mongo.Database) []domain.OperatorSchema
+	ResetPasswordById(ctx context.Context, db *mongo.Database, operatorId string)
+	Destroy(ctx context.Context, db *mongo.Database, operatorId string)
 }
 
 type OperatorRepositoryImpl struct {
@@ -21,21 +24,12 @@ func NewOperatorRepository() OperatorRepository {
 	return &OperatorRepositoryImpl{}
 }
 
-// func connect() (*mongo.Database, error) {
-// 	clientOptions := options.Client()
-// 	clientOptions.ApplyURI("mongodb://localhost:27017")
-// 	client, err := mongo.NewClient(clientOptions)
-// 	helper.PanicIfError(err)
-// 	err = client.Connect(context.Background())
-// 	helper.PanicIfError(err)
-
-// 	return client.Database("belajar_golang"), nil
-// }
-
-func (repository *OperatorRepositoryImpl) Save(ctx context.Context, db *mongo.Database, operator domain.OperatorCreate) error {
-	_, err := db.Collection("student").InsertOne(ctx, operator)
+func (repository *OperatorRepositoryImpl) Save(ctx context.Context, db *mongo.Database, operator domain.OperatorCreate) {
+	hash, err := helper.HashPassword(operator.Password)
 	helper.PanicIfError(err)
-	return nil
+	operator.Password = hash
+	_, err = db.Collection("student").InsertOne(ctx, operator)
+	helper.PanicIfError(err)
 }
 
 func (repository *OperatorRepositoryImpl) FindAll(ctx context.Context, db *mongo.Database) []domain.OperatorSchema {
@@ -50,4 +44,22 @@ func (repository *OperatorRepositoryImpl) FindAll(ctx context.Context, db *mongo
 		result = append(result, row)
 	}
 	return result
+}
+
+func (repository *OperatorRepositoryImpl) ResetPasswordById(ctx context.Context, db *mongo.Database, operatorId string) {
+	id, err := primitive.ObjectIDFromHex(operatorId)
+	helper.PanicIfError(err)
+	hash, err := helper.HashPassword("defaultpassword")
+	helper.PanicIfError(err)
+	res := db.Collection("student").FindOneAndUpdate(ctx, bson.M{"_id": id}, bson.M{"$set": bson.M{
+		"password": hash,
+	}})
+	helper.PanicIfError(res.Err())
+}
+
+func (repository *OperatorRepositoryImpl) Destroy(ctx context.Context, db *mongo.Database, operatorId string) {
+	id, err := primitive.ObjectIDFromHex(operatorId)
+	helper.PanicIfError(err)
+	_, err = db.Collection("student").DeleteOne(ctx, bson.M{"_id": id})
+	helper.PanicIfError(err)
 }

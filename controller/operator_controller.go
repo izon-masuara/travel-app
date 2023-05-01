@@ -13,6 +13,8 @@ import (
 type OperatorController interface {
 	Create(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 	FindAll(w http.ResponseWriter, r *http.Request, params httprouter.Params)
+	ResetPassword(w http.ResponseWriter, r *http.Request, params httprouter.Params)
+	Destroy(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 }
 
 type OperatorControllerImpl struct {
@@ -39,5 +41,17 @@ func (controller *OperatorControllerImpl) Create(w http.ResponseWriter, r *http.
 
 func (controller *OperatorControllerImpl) FindAll(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	operatorResponse := controller.OperatorService.FindAll(r.Context())
+	helper.Response(w, operatorResponse)
+}
+
+func (controller *OperatorControllerImpl) ResetPassword(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	operatorId := params.ByName("accountId")
+	operatorResponse := controller.OperatorService.ResetPassword(r.Context(), operatorId)
+	helper.Response(w, operatorResponse)
+}
+
+func (controller *OperatorControllerImpl) Destroy(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	operatorId := params.ByName("accountId")
+	operatorResponse := controller.OperatorService.Destroy(r.Context(), operatorId)
 	helper.Response(w, operatorResponse)
 }

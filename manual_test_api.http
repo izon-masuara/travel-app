@@ -14,7 +14,7 @@ Content-Type: application/json
 }
 
 ###
-PATCH {{baseUrl}}/account/644fb37e9d5b79dfa358ebe9 HTTP/1.1
+PATCH {{baseUrl}}/account/644fbba904f2615a3dfde3fb HTTP/1.1
 
 ###
-DELETE {{baseUrl}}/account/644fb37e9d5b79dfa358ebe9 HTTP/1.1
+DELETE {{baseUrl}}/account/644fbba904f2615a3dfde3fb HTTP/1.1

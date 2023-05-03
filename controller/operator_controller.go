@@ -35,23 +35,46 @@ func (controller *OperatorControllerImpl) Create(w http.ResponseWriter, r *http.
 	helper.PanicIfError(err)
 
 	operatorResponse := controller.OperatorService.Create(r.Context(), operatorCreateRequest)
+	webResponse := web.WebResponse{
+		Code:   http.StatusOK,
+		Status: "OK",
+		Data:   operatorResponse,
+	}
 
-	helper.Response(w, operatorResponse)
+	helper.Response(w, webResponse)
 }
 
 func (controller *OperatorControllerImpl) FindAll(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	operatorResponse := controller.OperatorService.FindAll(r.Context())
-	helper.Response(w, operatorResponse)
+	webResponse := web.WebResponse{
+		Code:   http.StatusOK,
+		Status: "OK",
+		Data:   operatorResponse,
+	}
+
+	helper.Response(w, webResponse)
 }
 
 func (controller *OperatorControllerImpl) ResetPassword(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	operatorId := params.ByName("accountId")
 	operatorResponse := controller.OperatorService.ResetPassword(r.Context(), operatorId)
-	helper.Response(w, operatorResponse)
+	webResponse := web.WebResponse{
+		Code:   http.StatusOK,
+		Status: "OK",
+		Data:   operatorResponse,
+	}
+
+	helper.Response(w, webResponse)
 }
 
 func (controller *OperatorControllerImpl) Destroy(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	operatorId := params.ByName("accountId")
 	operatorResponse := controller.OperatorService.Destroy(r.Context(), operatorId)
-	helper.Response(w, operatorResponse)
+	webResponse := web.WebResponse{
+		Code:   http.StatusOK,
+		Status: "OK",
+		Data:   operatorResponse,
+	}
+
+	helper.Response(w, webResponse)
 }

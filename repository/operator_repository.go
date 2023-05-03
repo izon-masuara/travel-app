@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"kautsar/travel-app-api/entity/domain"
+	"kautsar/travel-app-api/exception"
 	"kautsar/travel-app-api/helper"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -54,12 +55,20 @@ func (repository *OperatorRepositoryImpl) ResetPasswordById(ctx context.Context,
 	res := db.Collection("student").FindOneAndUpdate(ctx, bson.M{"_id": id}, bson.M{"$set": bson.M{
 		"password": hash,
 	}})
-	helper.PanicIfError(res.Err())
+	if res.Err().Error() == "mongo: no documents in result" {
+		panic(exception.NewNotFoundError("Data not found"))
+	} else {
+		helper.PanicIfError(err)
+	}
 }
 
 func (repository *OperatorRepositoryImpl) Destroy(ctx context.Context, db *mongo.Database, operatorId string) {
 	id, err := primitive.ObjectIDFromHex(operatorId)
 	helper.PanicIfError(err)
-	_, err = db.Collection("student").DeleteOne(ctx, bson.M{"_id": id})
-	helper.PanicIfError(err)
+	res := db.Collection("student").FindOneAndDelete(ctx, bson.M{"_id": id})
+	if res.Err().Error() == "mongo: no documents in result" {
+		panic(exception.NewNotFoundError("Data not found"))
+	} else {
+		helper.PanicIfError(err)
+	}
 }

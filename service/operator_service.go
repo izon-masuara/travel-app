@@ -43,7 +43,6 @@ func (service *OperatorServiceImpl) Create(ctx context.Context, request web.Oper
 	}
 
 	service.OperatorRepository.Save(ctx, service.Db, operatorPayload)
-	helper.PanicIfError(err)
 	return "Success create new account"
 }
 

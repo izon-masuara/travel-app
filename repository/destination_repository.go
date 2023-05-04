@@ -16,6 +16,7 @@ type DestinationRepository interface {
 	FindAll(ctx context.Context, db *mongo.Database) []domain.Destination
 	Update(ctx context.Context, db *mongo.Database, destination domain.DestinationUpdate, requestId string)
 	Destroy(ctx context.Context, db *mongo.Database, requestId string)
+	FindOne(ctx context.Context, db *mongo.Database, requestId string) domain.Destination
 }
 
 type DestinationRepositoryImpl struct {
@@ -88,8 +89,23 @@ func (repository *DestinationRepositoryImpl) Destroy(ctx context.Context, db *mo
 	err = db.Collection("destination").FindOne(ctx, bson.M{
 		"_id": id,
 	}).Decode(&found)
-	helper.PanicIfError(err)
+	if err != nil {
+		panic(exception.NewNotFoundError("Data not found"))
+	}
 	_, err = db.Collection("destination").DeleteOne(ctx, bson.M{"_id": id})
 	helper.PanicIfError(err)
 	helper.RemoveFile(found.ImageFile)
+}
+
+func (repository *DestinationRepositoryImpl) FindOne(ctx context.Context, db *mongo.Database, requestId string) domain.Destination {
+	id, err := primitive.ObjectIDFromHex(requestId)
+	helper.PanicIfError(err)
+	var found domain.Destination
+	err = db.Collection("destination").FindOne(ctx, bson.M{
+		"_id": id,
+	}).Decode(&found)
+	if err != nil {
+		panic(exception.NewNotFoundError("Data not found"))
+	}
+	return found
 }

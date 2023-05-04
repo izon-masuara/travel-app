@@ -17,6 +17,7 @@ type DestinationController interface {
 	FindAll(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 	Update(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 	Destroy(w http.ResponseWriter, r *http.Request, params httprouter.Params)
+	FindOne(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 }
 
 type DestinationControllerImpl struct {
@@ -110,6 +111,17 @@ func (controller *DestinationControllerImpl) Destroy(w http.ResponseWriter, r *h
 		Code:   http.StatusOK,
 		Status: "OK",
 		Data:   destinationResponse,
+	}
+	helper.Response(w, webResponse)
+}
+
+func (controller *DestinationControllerImpl) FindOne(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	destinationId := params.ByName("destinationId")
+	desnationResponse := controller.DestinationService.FindOne(r.Context(), destinationId)
+	webResponse := web.WebResponse{
+		Code:   http.StatusOK,
+		Status: "OK",
+		Data:   desnationResponse,
 	}
 	helper.Response(w, webResponse)
 }

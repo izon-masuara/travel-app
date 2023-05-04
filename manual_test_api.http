@@ -17,4 +17,13 @@ Content-Type: application/json
 PATCH {{baseUrl}}/account/644fbba904f2615a3dfde3fb HTTP/1.1
 
 ###
-DELETE {{baseUrl}}/account/644fbba904f2615a3dfde3fb HTTP/1.1
+DELETE {{baseUrl}}/account/6453aa0a463a6c39ebc9e997 HTTP/1.1
+
+###
+POST {{baseUrl}}/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "username":"Donggala",
+    "password":"SecretePassword"
+}

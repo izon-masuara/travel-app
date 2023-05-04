@@ -29,12 +29,12 @@ func (repository *OperatorRepositoryImpl) Save(ctx context.Context, db *mongo.Da
 	hash, err := helper.HashPassword(operator.Password)
 	helper.PanicIfError(err)
 	operator.Password = hash
-	_, err = db.Collection("student").InsertOne(ctx, operator)
+	_, err = db.Collection("account").InsertOne(ctx, operator)
 	helper.PanicIfError(err)
 }
 
 func (repository *OperatorRepositoryImpl) FindAll(ctx context.Context, db *mongo.Database) []domain.OperatorSchema {
-	cursor, err := db.Collection("student").Find(ctx, bson.D{})
+	cursor, err := db.Collection("account").Find(ctx, bson.D{})
 	helper.PanicIfError(err)
 	defer cursor.Close(ctx)
 	var result []domain.OperatorSchema
@@ -52,10 +52,10 @@ func (repository *OperatorRepositoryImpl) ResetPasswordById(ctx context.Context,
 	helper.PanicIfError(err)
 	hash, err := helper.HashPassword("defaultpassword")
 	helper.PanicIfError(err)
-	res := db.Collection("student").FindOneAndUpdate(ctx, bson.M{"_id": id}, bson.M{"$set": bson.M{
+	res := db.Collection("account").FindOneAndUpdate(ctx, bson.M{"_id": id}, bson.M{"$set": bson.M{
 		"password": hash,
 	}})
-	if res.Err().Error() == "mongo: no documents in result" {
+	if res.Err() != nil {
 		panic(exception.NewNotFoundError("Data not found"))
 	}
 }
@@ -63,8 +63,8 @@ func (repository *OperatorRepositoryImpl) ResetPasswordById(ctx context.Context,
 func (repository *OperatorRepositoryImpl) Destroy(ctx context.Context, db *mongo.Database, operatorId string) {
 	id, err := primitive.ObjectIDFromHex(operatorId)
 	helper.PanicIfError(err)
-	res := db.Collection("student").FindOneAndDelete(ctx, bson.M{"_id": id})
-	if res.Err().Error() == "mongo: no documents in result" {
+	res := db.Collection("account").FindOneAndDelete(ctx, bson.M{"_id": id})
+	if res.Err() != nil {
 		panic(exception.NewNotFoundError("Data not found"))
 	} else {
 		helper.PanicIfError(err)

@@ -16,6 +16,7 @@ type DestinationService interface {
 	FindAll(ctx context.Context) []domain.Destination
 	Update(ctx context.Context, request web.DestinationUpdateRequest, requestId string) string
 	Destroy(ctx context.Context, requestId string) string
+	FindOne(ctx context.Context, requestId string) domain.Destination
 }
 
 type DestinationServiceImpl struct {
@@ -89,4 +90,9 @@ func (service *DestinationServiceImpl) Update(ctx context.Context, request web.D
 func (service *DestinationServiceImpl) Destroy(ctx context.Context, requestId string) string {
 	service.DestinationRepository.Destroy(ctx, service.Db, requestId)
 	return "Succes destroy destination"
+}
+
+func (service *DestinationServiceImpl) FindOne(ctx context.Context, requestId string) domain.Destination {
+	result := service.DestinationRepository.FindOne(ctx, service.Db, requestId)
+	return result
 }

@@ -28,6 +28,11 @@ func main() {
 	destinationService := service.NewDestinationService(destinationRepository, db, validate)
 	destinationController := controller.NewDestinationController(destinationService)
 
+	// user init
+	userRepository := repository.NewUserRepository()
+	userService := service.NewUserService(userRepository, db, validate)
+	userController := controller.NewUserController(userService)
+
 	router := httprouter.New()
 
 	//account
@@ -39,8 +44,12 @@ func main() {
 	//destination
 	router.GET("/api/v1/destination", destinationController.FindAll)
 	router.POST("/api/v1/destination", destinationController.Create)
+	router.GET("/api/v1/destination/:destinationId", destinationController.FindOne)
 	router.PUT("/api/v1/destination/:destinationId", destinationController.Update)
 	router.DELETE("/api/v1/destination/:destinationId", destinationController.Destroy)
+
+	// user
+	router.POST("/api/v1/login", userController.Login)
 
 	router.PanicHandler = exception.ErrorHandler
 

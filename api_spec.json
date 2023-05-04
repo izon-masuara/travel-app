@@ -212,9 +212,13 @@
         },
         "/destinations": {
             "get": {
+                "security": [
+                    {
+                        "ApiAuth": []
+                    }
+                ],
                 "description": "List of destination",
                 "tags": [
-                    "User API",
                     "Operator API"
                 ],
                 "summary": "List of destination",
@@ -262,7 +266,7 @@
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "title":{
+                                    "title": {
                                         "type": "string"
                                     },
                                     "date": {
@@ -271,35 +275,35 @@
                                     "long": {
                                         "type": "string"
                                     },
-                                    "lat":{
+                                    "lat": {
                                         "type": "string"
                                     },
-                                    "image_file":{
+                                    "image_file": {
                                         "type": "object",
                                         "properties": {
                                             "file": {
                                                 "type": "array",
-                                                "items":{
+                                                "items": {
                                                     "type": "number"
                                                 }
                                             },
-                                            "header":{
+                                            "header": {
                                                 "type": "object",
                                                 "properties": {
-                                                    "filename":{
-                                                        "type":"string"
+                                                    "filename": {
+                                                        "type": "string"
                                                     },
-                                                    "size":{
+                                                    "size": {
                                                         "type": "integer"
                                                     },
-                                                    "content-type":{
+                                                    "content-type": {
                                                         "type": "string"
                                                     }
                                                 }
                                             }
                                         }
                                     },
-                                    "text":{
+                                    "text": {
                                         "type": "string"
                                     }
                                 }
@@ -323,9 +327,14 @@
         },
         "/destinations/{destinationId}": {
             "get": {
+                "security": [
+                    {
+                        "ApiAuth": []
+                    }
+                ],
                 "description": "Get destination by id",
                 "tags": [
-                    "User API"
+                    "Operator API"
                 ],
                 "summary": "Get destination by id",
                 "parameters": [
@@ -432,6 +441,86 @@
                 }
             }
         },
+        "/login": {
+            "post": {
+                "description": "Login API",
+                "tags": [
+                    "General"
+                ],
+                "summary": "Login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success Login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "token": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "message": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/regions": {
             "get": {
                 "description": "List of region",
@@ -466,6 +555,104 @@
                                                     }
                                                 }
                                             }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{regionId}/destinations": {
+            "get": {
+                "description": "List of destinations in region",
+                "tags": [
+                    "User API"
+                ],
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "regionId",
+                        "in": "path",
+                        "description": "Region Id",
+                        "required": true
+                    }
+                ],
+                "summary": "List of destinations in region",
+                "responses": {
+                    "200": {
+                        "description": "Success get list destination in region",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/destination"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{regionId}/destination/{destinationId}": {
+            "get": {
+                "description": "Get destination form region id and destination id",
+                "tags": [
+                    "User API"
+                ],
+                "summary": "Get destination form region id and destination id",
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "regionId",
+                        "description": "Region Id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "destinationId",
+                        "description": "Destination Id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get destination by id in region by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/destination"
                                         }
                                     }
                                 }

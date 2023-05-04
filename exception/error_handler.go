@@ -17,6 +17,10 @@ func ErrorHandler(w http.ResponseWriter, r *http.Request, err interface{}) {
 		return
 	}
 
+	if authError(w, r, err) {
+		return
+	}
+
 	internalServerError(w, r, err)
 }
 
@@ -36,7 +40,7 @@ func notFoundError(w http.ResponseWriter, r *http.Request, err interface{}) bool
 	exception, ok := err.(NotFoundError)
 	if ok {
 		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusInternalServerError)
+		w.WriteHeader(http.StatusNotFound)
 		webResponse := web.WebResponse{
 			Code:   http.StatusNotFound,
 			Status: "NOT FOUND",
@@ -59,6 +63,24 @@ func validationErrors(w http.ResponseWriter, r *http.Request, err interface{}) b
 			Code:   http.StatusBadRequest,
 			Status: "BAD REQUEST",
 			Data:   exception.Error(),
+		}
+
+		helper.Response(w, webResponse)
+		return true
+	} else {
+		return false
+	}
+}
+
+func authError(w http.ResponseWriter, r *http.Request, err interface{}) bool {
+	exception, ok := err.(AuthError)
+	if ok {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusUnauthorized)
+		webResponse := web.WebResponse{
+			Code:   http.StatusUnauthorized,
+			Status: "Unauthorized",
+			Data:   exception.Error,
 		}
 
 		helper.Response(w, webResponse)

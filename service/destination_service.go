@@ -14,6 +14,7 @@ import (
 type DestinationService interface {
 	Create(ctx context.Context, request web.DestinationCreateRequest) string
 	FindAll(ctx context.Context) []domain.Destination
+	Update(ctx context.Context, request web.DestinationUpdateRequest, requestId string) string
 }
 
 type DestinationServiceImpl struct {
@@ -59,4 +60,27 @@ func (service *DestinationServiceImpl) Create(ctx context.Context, request web.D
 func (service *DestinationServiceImpl) FindAll(ctx context.Context) []domain.Destination {
 	result := service.DestinationRepository.FindAll(ctx, service.Db)
 	return result
+}
+
+func (service *DestinationServiceImpl) Update(ctx context.Context, request web.DestinationUpdateRequest, requestId string) string {
+	err := service.validate.Struct(request)
+	if err != nil {
+		helper.RemoveFile(request.ImageFile)
+		helper.PanicIfError(err)
+	}
+
+	destinationPayload := domain.DestinationUpdate{
+		Title: request.Title,
+		Date:  request.Date,
+		Location: domain.Location{
+			Long: request.Long,
+			Lat:  request.Lat,
+		},
+		ImageFile: request.ImageFile,
+		Text:      request.Text,
+	}
+
+	service.DestinationRepository.Update(ctx, service.Db, destinationPayload, requestId)
+
+	return "Success update destination"
 }

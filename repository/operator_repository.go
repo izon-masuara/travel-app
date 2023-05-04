@@ -57,8 +57,6 @@ func (repository *OperatorRepositoryImpl) ResetPasswordById(ctx context.Context,
 	}})
 	if res.Err().Error() == "mongo: no documents in result" {
 		panic(exception.NewNotFoundError("Data not found"))
-	} else {
-		helper.PanicIfError(err)
 	}
 }
 

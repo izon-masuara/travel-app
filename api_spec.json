@@ -235,15 +235,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "type": "object",
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "string"
-                                                    },
-                                                    "name": {
-                                                        "type": "string"
-                                                    }
-                                                }
+                                                "$ref": "#/components/schemas/destination"
                                             }
                                         }
                                     }
@@ -523,18 +515,7 @@
                         "type": "string"
                     },
                     "image_file": {
-                        "type": "object",
-                        "properties": {
-                            "title": {
-                                "type": "string"
-                            },
-                            "mimetype": {
-                                "type": "string"
-                            },
-                            "size": {
-                                "type": "number"
-                            }
-                        }
+                        "type": "string"
                     },
                     "location": {
                         "type": "object",

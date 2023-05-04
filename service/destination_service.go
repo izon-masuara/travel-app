@@ -15,6 +15,7 @@ type DestinationService interface {
 	Create(ctx context.Context, request web.DestinationCreateRequest) string
 	FindAll(ctx context.Context) []domain.Destination
 	Update(ctx context.Context, request web.DestinationUpdateRequest, requestId string) string
+	Destroy(ctx context.Context, requestId string) string
 }
 
 type DestinationServiceImpl struct {
@@ -83,4 +84,9 @@ func (service *DestinationServiceImpl) Update(ctx context.Context, request web.D
 	service.DestinationRepository.Update(ctx, service.Db, destinationPayload, requestId)
 
 	return "Success update destination"
+}
+
+func (service *DestinationServiceImpl) Destroy(ctx context.Context, requestId string) string {
+	service.DestinationRepository.Destroy(ctx, service.Db, requestId)
+	return "Succes destroy destination"
 }

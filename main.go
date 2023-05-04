@@ -40,6 +40,7 @@ func main() {
 	router.GET("/api/v1/destination", destinationController.FindAll)
 	router.POST("/api/v1/destination", destinationController.Create)
 	router.PUT("/api/v1/destination/:destinationId", destinationController.Update)
+	router.DELETE("/api/v1/destination/:destinationId", destinationController.Destroy)
 
 	router.PanicHandler = exception.ErrorHandler
 

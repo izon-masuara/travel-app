@@ -13,6 +13,7 @@ import (
 
 type DestinationService interface {
 	Create(ctx context.Context, request web.DestinationCreateRequest) string
+	FindAll(ctx context.Context) []domain.Destination
 }
 
 type DestinationServiceImpl struct {
@@ -53,4 +54,9 @@ func (service *DestinationServiceImpl) Create(ctx context.Context, request web.D
 
 	service.DestinationRepository.Save(ctx, service.Db, destinationPayload)
 	return "Success create destination"
+}
+
+func (service *DestinationServiceImpl) FindAll(ctx context.Context) []domain.Destination {
+	result := service.DestinationRepository.FindAll(ctx, service.Db)
+	return result
 }

@@ -14,6 +14,7 @@ import (
 
 type DestinationController interface {
 	Create(w http.ResponseWriter, r *http.Request, params httprouter.Params)
+	FindAll(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 }
 
 type DestinationControllerImpl struct {
@@ -52,6 +53,16 @@ func (controller *DestinationControllerImpl) Create(w http.ResponseWriter, r *ht
 		Code:   http.StatusOK,
 		Status: "OK",
 		Data:   destniationResponse,
+	}
+	helper.Response(w, webResponse)
+}
+
+func (controller *DestinationControllerImpl) FindAll(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	destinationResponse := controller.DestinationService.FindAll(r.Context())
+	webResponse := web.WebResponse{
+		Code:   http.StatusOK,
+		Status: "OK",
+		Data:   destinationResponse,
 	}
 	helper.Response(w, webResponse)
 }

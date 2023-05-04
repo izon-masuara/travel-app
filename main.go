@@ -37,9 +37,7 @@ func main() {
 	router.DELETE("/api/v1/account/:accountId", operatorController.Destroy)
 
 	//destination
-	router.GET("/api/v1/destination", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-		w.Write([]byte("Hello world"))
-	})
+	router.GET("/api/v1/destination", destinationController.FindAll)
 	router.POST("/api/v1/destination", destinationController.Create)
 
 	router.PanicHandler = exception.ErrorHandler

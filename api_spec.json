@@ -266,9 +266,51 @@
                 "summary": "Create new destination",
                 "requestBody": {
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/destination"
+                                "type": "object",
+                                "properties": {
+                                    "title":{
+                                        "type": "string"
+                                    },
+                                    "date": {
+                                        "type": "string"
+                                    },
+                                    "long": {
+                                        "type": "string"
+                                    },
+                                    "lat":{
+                                        "type": "string"
+                                    },
+                                    "image_file":{
+                                        "type": "object",
+                                        "properties": {
+                                            "file": {
+                                                "type": "array",
+                                                "items":{
+                                                    "type": "number"
+                                                }
+                                            },
+                                            "header":{
+                                                "type": "object",
+                                                "properties": {
+                                                    "filename":{
+                                                        "type":"string"
+                                                    },
+                                                    "size":{
+                                                        "type": "integer"
+                                                    },
+                                                    "content-type":{
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "text":{
+                                        "type": "string"
+                                    }
+                                }
                             }
                         }
                     }

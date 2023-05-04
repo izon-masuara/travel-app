@@ -14,3 +14,8 @@ func SaveFile(filename string, file multipart.File) {
 	_, err = io.Copy(dst, file)
 	PanicIfError(err)
 }
+
+func RemoveFile(filename string) {
+	err := os.Remove("public/" + filename)
+	PanicIfError(err)
+}

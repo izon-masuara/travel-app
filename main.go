@@ -2,11 +2,9 @@ package main
 
 import (
 	"kautsar/travel-app-api/app"
-	"kautsar/travel-app-api/controller"
 	"kautsar/travel-app-api/exception"
 	"kautsar/travel-app-api/helper"
-	"kautsar/travel-app-api/repository"
-	"kautsar/travel-app-api/service"
+	"kautsar/travel-app-api/middleware"
 	"net/http"
 
 	"github.com/go-playground/validator"
@@ -17,45 +15,20 @@ func main() {
 
 	db := app.NewDb()
 	validate := validator.New()
-
-	// operator init
-	operatorRepository := repository.NewOperatorRepository()
-	operatorService := service.NewOperatorService(operatorRepository, db, validate)
-	operatorController := controller.NewOperatorController(operatorService)
-
-	// destination init
-	destinationRepository := repository.NewDestinationRepository()
-	destinationService := service.NewDestinationService(destinationRepository, db, validate)
-	destinationController := controller.NewDestinationController(destinationService)
-
-	// user init
-	userRepository := repository.NewUserRepository()
-	userService := service.NewUserService(userRepository, db, validate)
-	userController := controller.NewUserController(userService)
-
 	router := httprouter.New()
 
-	//account
-	router.GET("/api/v1/account", operatorController.FindAll)
-	router.POST("/api/v1/account", operatorController.Create)
-	router.PATCH("/api/v1/account/:accountId", operatorController.ResetPassword)
-	router.DELETE("/api/v1/account/:accountId", operatorController.Destroy)
-
-	//destination
-	router.GET("/api/v1/destination", destinationController.FindAll)
-	router.POST("/api/v1/destination", destinationController.Create)
-	router.GET("/api/v1/destination/:destinationId", destinationController.FindOne)
-	router.PUT("/api/v1/destination/:destinationId", destinationController.Update)
-	router.DELETE("/api/v1/destination/:destinationId", destinationController.Destroy)
-
-	// user
-	router.POST("/api/v1/login", userController.Login)
+	//user
+	app.RegisterUserRoutes(router, db, validate)
+	// operator
+	app.RegisterAdminRoutes(router, db, validate)
+	// destination
+	app.RegisterDestinationRoutes(router, db, validate)
 
 	router.PanicHandler = exception.ErrorHandler
 
 	server := http.Server{
 		Addr:    "localhost:3000",
-		Handler: router,
+		Handler: middleware.NewAuthMiddleware(router),
 	}
 
 	err := server.ListenAndServe()

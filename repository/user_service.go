@@ -32,5 +32,9 @@ func (repository *UserRepositoryImpl) Login(ctx context.Context, db *mongo.Datab
 	if !helper.DecribePassword(request.Passowrd, found.Password) {
 		panic(exception.NewAuthError("Username or password are wrong"))
 	}
-	return "Token"
+	token := helper.GenerateToken(&helper.JwtPayload{
+		Name: found.Name,
+		Role: found.Role,
+	})
+	return token
 }

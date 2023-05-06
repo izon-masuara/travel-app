@@ -29,6 +29,7 @@ func (repository *OperatorRepositoryImpl) Save(ctx context.Context, db *mongo.Da
 	hash, err := helper.HashPassword(operator.Password)
 	helper.PanicIfError(err)
 	operator.Password = hash
+	operator.Role = "operator"
 	_, err = db.Collection("account").InsertOne(ctx, operator)
 	helper.PanicIfError(err)
 }

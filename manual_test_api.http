@@ -1,29 +1,41 @@
 @baseUrl = http://localhost:3000/api/v1
 
 GET {{baseUrl}}/account HTTP/1.1
-
+TOKEN:"eyJUeXAiOiJKV1QiLCJBbGciOiJIUzI1NiIsIkN0eSI6IiJ9.eyJhdXRoIjp7Ik5hbWUiOiJhZG1pbiIsIlJvbGUiOiJvcGVyYXRvciJ9LCJpYXQiOjE2ODMzNjQxMDN9.72jzy_1H4gnCOwbd_R0eGOwASrPECubZ4kashViueSc"
 ###
 
 POST {{baseUrl}}/account HTTP/1.1
 Content-Type: application/json
 
 {
-    "Name" : "Donggala",
-    "Username": "Donggala",
-    "Password": "SecretePassword"
+    "Name" : "admin",
+    "Username": "admin",
+    "Password": "admin123"
 }
 
 ###
-PATCH {{baseUrl}}/account/644fbba904f2615a3dfde3fb HTTP/1.1
+POST {{baseUrl}}/account HTTP/1.1
+Content-Type: application/json
+TOKEN:"eyJUeXAiOiJKV1QiLCJBbGciOiJIUzI1NiIsIkN0eSI6IiJ9.eyJhdXRoIjp7Ik5hbWUiOiJhZG1pbiIsIlJvbGUiOiJvcGVyYXRvciJ9LCJpYXQiOjE2ODMzNjQxMDN9.72jzy_1H4gnCOwbd_R0eGOwASrPECubZ4kashViueSc"
+
+{
+    "Name" : "Donggala",
+    "Username": "Donggala",
+    "Password": "Donggala123"
+}
 
 ###
-DELETE {{baseUrl}}/account/6453aa0a463a6c39ebc9e997 HTTP/1.1
+PATCH {{baseUrl}}/account/6456075f7855bb0e7f3e17b3 HTTP/1.1
+TOKEN:"eyJUeXAiOiJKV1QiLCJBbGciOiJIUzI1NiIsIkN0eSI6IiJ9.eyJhdXRoIjp7Ik5hbWUiOiJhZG1pbiIsIlJvbGUiOiJvcGVyYXRvciJ9LCJpYXQiOjE2ODMzNTk2MzR9.et_BJ8VsgDqibM8tZ1aAaTDI0cmqmFHNkgWs8I2kFG0"
+
+###
+DELETE {{baseUrl}}/account/6455a00fe454ac5256f1069b HTTP/1.1
 
 ###
 POST {{baseUrl}}/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "username":"Donggala",
-    "password":"SecretePassword"
+    "username":"admin",
+    "password":"defaultpassword"
 }

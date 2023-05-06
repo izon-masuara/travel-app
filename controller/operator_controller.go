@@ -2,7 +2,6 @@ package controller
 
 import (
 	"encoding/json"
-	"fmt"
 	"kautsar/travel-app-api/entity/web"
 	"kautsar/travel-app-api/helper"
 	"kautsar/travel-app-api/service"
@@ -29,7 +28,6 @@ func NewOperatorController(operatorService service.OperatorService) OperatorCont
 }
 
 func (controller *OperatorControllerImpl) Create(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	fmt.Println(r.Context().Value("auth"))
 	decoder := json.NewDecoder(r.Body)
 
 	operatorCreateRequest := web.OperatorCreateRequest{}
@@ -47,7 +45,6 @@ func (controller *OperatorControllerImpl) Create(w http.ResponseWriter, r *http.
 }
 
 func (controller *OperatorControllerImpl) FindAll(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	fmt.Println(r.Context().Value("auth"))
 	operatorResponse := controller.OperatorService.FindAll(r.Context())
 	webResponse := web.WebResponse{
 		Code:   http.StatusOK,

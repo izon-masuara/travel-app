@@ -1,7 +1,8 @@
 @baseUrl = http://localhost:3000/api/v1
 
 GET {{baseUrl}}/account HTTP/1.1
-TOKEN:"eyJUeXAiOiJKV1QiLCJBbGciOiJIUzI1NiIsIkN0eSI6IiJ9.eyJhdXRoIjp7Ik5hbWUiOiJhZG1pbiIsIlJvbGUiOiJvcGVyYXRvciJ9LCJpYXQiOjE2ODMzNjQxMDN9.72jzy_1H4gnCOwbd_R0eGOwASrPECubZ4kashViueSc"
+TOKEN:"eyJUeXAiOiJKV1QiLCJBbGciOiJIUzI1NiIsIkN0eSI6IiJ9.eyJhdXRoIjp7Ik5hbWUiOiJhZG1pbiIsIlJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2ODMzNzEyODh9.JhusptrjlvIPzZGJDaLe-mlKU7tsemId8__nB57dJao"
+
 ###
 
 POST {{baseUrl}}/account HTTP/1.1
@@ -16,26 +17,30 @@ Content-Type: application/json
 ###
 POST {{baseUrl}}/account HTTP/1.1
 Content-Type: application/json
-TOKEN:"eyJUeXAiOiJKV1QiLCJBbGciOiJIUzI1NiIsIkN0eSI6IiJ9.eyJhdXRoIjp7Ik5hbWUiOiJhZG1pbiIsIlJvbGUiOiJvcGVyYXRvciJ9LCJpYXQiOjE2ODMzNjQxMDN9.72jzy_1H4gnCOwbd_R0eGOwASrPECubZ4kashViueSc"
+TOKEN:"eyJUeXAiOiJKV1QiLCJBbGciOiJIUzI1NiIsIkN0eSI6IiJ9.eyJhdXRoIjp7Ik5hbWUiOiJhZG1pbiIsIlJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2ODMzNzEyODh9.JhusptrjlvIPzZGJDaLe-mlKU7tsemId8__nB57dJao"
 
 {
-    "Name" : "Donggala",
-    "Username": "Donggala",
-    "Password": "Donggala123"
+    "Name" : "sigi",
+    "Username": "Sigi",
+    "Password": "Sigipass123"
 }
 
 ###
 PATCH {{baseUrl}}/account/6456075f7855bb0e7f3e17b3 HTTP/1.1
-TOKEN:"eyJUeXAiOiJKV1QiLCJBbGciOiJIUzI1NiIsIkN0eSI6IiJ9.eyJhdXRoIjp7Ik5hbWUiOiJhZG1pbiIsIlJvbGUiOiJvcGVyYXRvciJ9LCJpYXQiOjE2ODMzNTk2MzR9.et_BJ8VsgDqibM8tZ1aAaTDI0cmqmFHNkgWs8I2kFG0"
 
 ###
-DELETE {{baseUrl}}/account/6455a00fe454ac5256f1069b HTTP/1.1
+DELETE {{baseUrl}}/account/64561b23493102983a61ab59 HTTP/1.1
 
 ###
 POST {{baseUrl}}/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "username":"admin",
-    "password":"defaultpassword"
+    "username":"Sigi",
+    "password":"Sigipass123"
 }
+###
+GET {{baseUrl}}/user/donggala/destinations HTTP/1.1
+
+###
+GET {{baseUrl}}/user/sigi/destinations/6456376168883f2d510dc505 HTTP/1.1

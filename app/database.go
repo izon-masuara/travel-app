@@ -17,5 +17,5 @@ func NewDb() *mongo.Database {
 	err = client.Connect(context.TODO())
 	helper.PanicIfError(err)
 
-	return client.Database("belajar_golang")
+	return client.Database("travel_app_dev")
 }

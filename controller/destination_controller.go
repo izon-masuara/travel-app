@@ -35,7 +35,12 @@ func (controller *DestinationControllerImpl) Create(w http.ResponseWriter, r *ht
 	helper.PanicIfError(err)
 
 	file, header, err := r.FormFile("image_file")
-	defer file.Close()
+	defer func() {
+		err := file.Close()
+		if err != nil {
+			helper.PanicIfError(err)
+		}
+	}()
 	helper.PanicIfError(err)
 
 	filename := fmt.Sprintf("%v-%v-%s", time.Now().Nanosecond(), rand.Intn(20), header.Filename)
@@ -77,7 +82,12 @@ func (controller *DestinationControllerImpl) Update(w http.ResponseWriter, r *ht
 	helper.PanicIfError(err)
 
 	file, header, err := r.FormFile("image_file")
-	defer file.Close()
+	defer func() {
+		err := file.Close()
+		if err != nil {
+			helper.PanicIfError(err)
+		}
+	}()
 	helper.PanicIfError(err)
 
 	filename := fmt.Sprintf("%v-%v-%s", time.Now().Nanosecond(), rand.Intn(20), header.Filename)

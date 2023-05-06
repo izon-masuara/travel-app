@@ -8,7 +8,12 @@ import (
 
 func SaveFile(filename string, file multipart.File) {
 	dst, err := os.Create("public/" + filename)
-	defer dst.Close()
+	defer func() {
+		err := dst.Close()
+		if err != nil {
+			PanicIfError(err)
+		}
+	}()
 	PanicIfError(err)
 
 	_, err = io.Copy(dst, file)

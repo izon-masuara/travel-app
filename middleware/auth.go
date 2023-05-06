@@ -23,6 +23,9 @@ func (middleware *AuthMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Reque
 	if path[3] == "login" {
 		middleware.Handler.ServeHTTP(w, r)
 		return
+	} else if path[3] == "user" {
+		middleware.Handler.ServeHTTP(w, r)
+		return
 	}
 	token := r.Header.Get("TOKEN")
 	data, err := helper.ValidateToken(token)

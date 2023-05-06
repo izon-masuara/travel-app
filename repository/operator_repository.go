@@ -26,6 +26,10 @@ func NewOperatorRepository() OperatorRepository {
 }
 
 func (repository *OperatorRepositoryImpl) Save(ctx context.Context, db *mongo.Database, operator domain.OperatorCreate) {
+	jsonAuth := helper.InterfaceToJsonAuth(ctx)
+	if jsonAuth.Role != "admin" {
+		panic(exception.NewAuthError("UNAUTORIZED"))
+	}
 	hash, err := helper.HashPassword(operator.Password)
 	helper.PanicIfError(err)
 	operator.Password = hash
@@ -35,6 +39,10 @@ func (repository *OperatorRepositoryImpl) Save(ctx context.Context, db *mongo.Da
 }
 
 func (repository *OperatorRepositoryImpl) FindAll(ctx context.Context, db *mongo.Database) []domain.OperatorSchema {
+	jsonAuth := helper.InterfaceToJsonAuth(ctx)
+	if jsonAuth.Role != "admin" {
+		panic(exception.NewAuthError("UNAUTORIZED"))
+	}
 	cursor, err := db.Collection("account").Find(ctx, bson.D{})
 	helper.PanicIfError(err)
 	defer cursor.Close(ctx)
@@ -49,6 +57,10 @@ func (repository *OperatorRepositoryImpl) FindAll(ctx context.Context, db *mongo
 }
 
 func (repository *OperatorRepositoryImpl) ResetPasswordById(ctx context.Context, db *mongo.Database, operatorId string) {
+	jsonAuth := helper.InterfaceToJsonAuth(ctx)
+	if jsonAuth.Role != "admin" {
+		panic(exception.NewAuthError("UNAUTORIZED"))
+	}
 	id, err := primitive.ObjectIDFromHex(operatorId)
 	helper.PanicIfError(err)
 	hash, err := helper.HashPassword("defaultpassword")
@@ -62,6 +74,10 @@ func (repository *OperatorRepositoryImpl) ResetPasswordById(ctx context.Context,
 }
 
 func (repository *OperatorRepositoryImpl) Destroy(ctx context.Context, db *mongo.Database, operatorId string) {
+	jsonAuth := helper.InterfaceToJsonAuth(ctx)
+	if jsonAuth.Role != "admin" {
+		panic(exception.NewAuthError("UNAUTORIZED"))
+	}
 	id, err := primitive.ObjectIDFromHex(operatorId)
 	helper.PanicIfError(err)
 	res := db.Collection("account").FindOneAndDelete(ctx, bson.M{"_id": id})

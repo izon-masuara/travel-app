@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"kautsar/travel-app-api/app"
 	"kautsar/travel-app-api/exception"
 	"kautsar/travel-app-api/helper"
@@ -16,6 +17,8 @@ func main() {
 	db := app.NewDb()
 	validate := validator.New()
 	router := httprouter.New()
+
+	defer db.Client().Disconnect(context.Background())
 
 	//user
 	app.RegisterUserRoutes(router, db, validate)

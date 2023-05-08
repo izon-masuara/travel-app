@@ -14,6 +14,7 @@ type UserController interface {
 	Login(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 	FindDestinationByRegion(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 	FindOneDestinationByRegion(w http.ResponseWriter, r *http.Request, params httprouter.Params)
+	FindAllRegions(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 }
 
 type UserControllerImpl struct {
@@ -61,6 +62,16 @@ func (controller *UserControllerImpl) FindOneDestinationByRegion(w http.Response
 		Code:   http.StatusOK,
 		Status: "OK",
 		Data:   destinationsResponse,
+	}
+	helper.Response(w, webResponse)
+}
+
+func (controller *UserControllerImpl) FindAllRegions(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	regions := controller.UserService.FindAllRegions(r.Context())
+	webResponse := web.WebResponse{
+		Code:   http.StatusOK,
+		Status: "OK",
+		Data:   regions,
 	}
 	helper.Response(w, webResponse)
 }

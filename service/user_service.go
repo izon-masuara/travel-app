@@ -15,6 +15,7 @@ type UserService interface {
 	Login(ctx context.Context, requset web.LoginRequest) string
 	FindDestinationByRegion(ctx context.Context, requset string) []domain.Destination
 	FindOneDestinationByRegion(ctx context.Context, requestRegion string, requestDestination string) domain.Destination
+	FindAllRegions(ctx context.Context) []string
 }
 
 type UserServiceImpl struct {
@@ -52,4 +53,9 @@ func (service *UserServiceImpl) FindDestinationByRegion(ctx context.Context, req
 func (service *UserServiceImpl) FindOneDestinationByRegion(ctx context.Context, requestRegion string, requestDestination string) domain.Destination {
 	result := service.UserRepository.FindOneDestinationByRegion(ctx, service.Db, requestRegion, requestDestination)
 	return result
+}
+
+func (service *UserServiceImpl) FindAllRegions(ctx context.Context) []string {
+	regions := service.UserRepository.FindAllRegions(ctx, service.Db)
+	return regions
 }

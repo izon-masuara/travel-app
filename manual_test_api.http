@@ -36,11 +36,14 @@ POST {{baseUrl}}/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "username":"Sigi",
-    "password":"Sigipass123"
+    "username":"admin",
+    "password":"admin1"
 }
 ###
 GET {{baseUrl}}/user/donggala/destinations HTTP/1.1
 
 ###
 GET {{baseUrl}}/user/sigi/destinations/6456376168883f2d510dc505 HTTP/1.1
+
+###
+GET {{baseUrl}}/regions HTTP/1.1

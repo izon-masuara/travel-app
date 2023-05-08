@@ -15,6 +15,7 @@ type UserRepository interface {
 	Login(ctx context.Context, db *mongo.Database, request domain.Login) string
 	FindDestinationByRegion(ctx context.Context, db *mongo.Database, request string) []domain.Destination
 	FindOneDestinationByRegion(ctx context.Context, db *mongo.Database, requestRegion string, requestDestination string) domain.Destination
+	FindAllRegions(ctx context.Context, db *mongo.Database) []string
 }
 
 type UserRepositoryImpl struct {
@@ -30,10 +31,12 @@ func (repository *UserRepositoryImpl) Login(ctx context.Context, db *mongo.Datab
 		"username": request.Username,
 	}).Decode(&found)
 	if err != nil {
-		panic(exception.NewAuthError("Username or password are wrong"))
+		panic(exception.NewAuthError("Username or password is wrong"))
 	}
-	if !helper.DecribePassword(request.Passowrd, found.Password) {
-		panic(exception.NewAuthError("Username or password are wrong"))
+	if found.Role != "admin" {
+		if !helper.DecribePassword(request.Passowrd, found.Password) {
+			panic(exception.NewAuthError("Username or password is wrong"))
+		}
 	}
 	token := helper.GenerateToken(&helper.JwtPayload{
 		Name: found.Name,
@@ -67,4 +70,16 @@ func (repository *UserRepositoryImpl) FindOneDestinationByRegion(ctx context.Con
 		panic(exception.NewNotFoundError("Data not found"))
 	}
 	return found
+}
+
+func (repository *UserRepositoryImpl) FindAllRegions(ctx context.Context, db *mongo.Database) []string {
+	regions, err := db.ListCollectionNames(ctx, bson.M{})
+	helper.PanicIfError(err)
+	var filerRegions []string
+	for _, v := range regions {
+		if v != "account" {
+			filerRegions = append(filerRegions, v)
+		}
+	}
+	return filerRegions
 }

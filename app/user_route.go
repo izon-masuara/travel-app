@@ -16,6 +16,7 @@ func RegisterUserRoutes(router *httprouter.Router, db *mongo.Database, validate 
 	userService := service.NewUserService(userRepository, db, validate)
 	userController := controller.NewUserController(userService)
 	// user
+	router.GET("/api/v1/regions", userController.FindAllRegions)
 	router.GET("/api/v1/user/:region_name/destinations", userController.FindDestinationByRegion)
 	router.GET("/api/v1/user/:region_name/destinations/:destination_id", userController.FindOneDestinationByRegion)
 	router.POST("/api/v1/login", userController.Login)

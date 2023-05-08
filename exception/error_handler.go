@@ -27,6 +27,7 @@ func ErrorHandler(w http.ResponseWriter, r *http.Request, err interface{}) {
 func internalServerError(w http.ResponseWriter, r *http.Request, err interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusInternalServerError)
+
 	webResponse := web.WebResponse{
 		Code:   http.StatusInternalServerError,
 		Status: "INTERNAL SERVER ERROR",
@@ -41,6 +42,7 @@ func notFoundError(w http.ResponseWriter, r *http.Request, err interface{}) bool
 	if ok {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusNotFound)
+
 		webResponse := web.WebResponse{
 			Code:   http.StatusNotFound,
 			Status: "NOT FOUND",
@@ -59,6 +61,7 @@ func validationErrors(w http.ResponseWriter, r *http.Request, err interface{}) b
 	if ok {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
+
 		webResponse := web.WebResponse{
 			Code:   http.StatusBadRequest,
 			Status: "BAD REQUEST",
@@ -77,6 +80,7 @@ func authError(w http.ResponseWriter, r *http.Request, err interface{}) bool {
 	if ok {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusUnauthorized)
+
 		webResponse := web.WebResponse{
 			Code:   http.StatusUnauthorized,
 			Status: "Unauthorized",

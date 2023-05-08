@@ -20,7 +20,7 @@ func NewAuthMiddleware(handler http.Handler) *AuthMiddleware {
 
 func (middleware *AuthMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	path := strings.Split(r.URL.Path, "/")
-	if path[3] == "login" {
+	if path[3] == "login" || path[3] == "regions" {
 		middleware.Handler.ServeHTTP(w, r)
 		return
 	} else if path[3] == "user" {

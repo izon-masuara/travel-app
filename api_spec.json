@@ -474,16 +474,48 @@
                                     "type": "object",
                                     "properties": {
                                         "code": {
-                                            "type": "number"
+                                            "type": "number",
+                                            "example": 200
                                         },
                                         "status": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "OK"
                                         },
                                         "data": {
                                             "type": "object",
                                             "properties": {
                                                 "token": {
-                                                    "type": "string"
+                                                    "type": "string",
+                                                    "example": "JWT token"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number",
+                                            "example": 400
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "BAD REQUEST"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Validation error"
                                                 }
                                             }
                                         }
@@ -500,16 +532,19 @@
                                     "type": "object",
                                     "properties": {
                                         "code": {
-                                            "type": "number"
+                                            "type": "number",
+                                            "example": 401
                                         },
                                         "status": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "example": "UNAUTHORIZED"
                                         },
                                         "data": {
                                             "type": "object",
                                             "properties": {
                                                 "message": {
-                                                    "type": "string"
+                                                    "type": "string",
+                                                    "example": "Username or password is wrong"
                                                 }
                                             }
                                         }

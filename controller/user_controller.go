@@ -15,6 +15,7 @@ type UserController interface {
 	FindDestinationByRegion(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 	FindOneDestinationByRegion(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 	FindAllRegions(w http.ResponseWriter, r *http.Request, params httprouter.Params)
+	FindImage(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 }
 
 type UserControllerImpl struct {
@@ -74,4 +75,12 @@ func (controller *UserControllerImpl) FindAllRegions(w http.ResponseWriter, r *h
 		Data:   regions,
 	}
 	helper.Response(w, webResponse)
+}
+
+func (controller *UserControllerImpl) FindImage(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	imgName := params.ByName("image_file")
+	byteFile := controller.UserService.FindImage(imgName)
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/octet-stream")
+	w.Write(byteFile)
 }

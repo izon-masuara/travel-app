@@ -13,7 +13,7 @@ import (
 
 type DestinationService interface {
 	Create(ctx context.Context, request web.DestinationCreateRequest) string
-	FindAll(ctx context.Context) []domain.Destination
+	FindAll(ctx context.Context) []domain.DestinationResponse
 	Update(ctx context.Context, request web.DestinationUpdateRequest, requestId string) string
 	Destroy(ctx context.Context, requestId string) string
 	FindOne(ctx context.Context, requestId string) domain.Destination
@@ -59,7 +59,7 @@ func (service *DestinationServiceImpl) Create(ctx context.Context, request web.D
 	return "Success create destination"
 }
 
-func (service *DestinationServiceImpl) FindAll(ctx context.Context) []domain.Destination {
+func (service *DestinationServiceImpl) FindAll(ctx context.Context) []domain.DestinationResponse {
 	result := service.DestinationRepository.FindAll(ctx, service.Db)
 	return result
 }

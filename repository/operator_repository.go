@@ -51,7 +51,9 @@ func (repository *OperatorRepositoryImpl) FindAll(ctx context.Context, db *mongo
 		var row domain.OperatorSchema
 		err := cursor.Decode(&row)
 		helper.PanicIfError(err)
-		result = append(result, row)
+		if row.Username != "admin" {
+			result = append(result, row)
+		}
 	}
 	return result
 }

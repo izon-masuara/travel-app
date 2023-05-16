@@ -26,7 +26,9 @@ TOKEN:"eyJUeXAiOiJKV1QiLCJBbGciOiJIUzI1NiIsIkN0eSI6IiJ9.eyJhdXRoIjp7Ik5hbWUiOiJh
 }
 
 ###
-PATCH {{baseUrl}}/account/6456075f7855bb0e7f3e17b3 HTTP/1.1
+PATCH {{baseUrl}}/account/6456359c29da143b2ce0da29 HTTP/1.1
+Content-Type: application/json
+TOKEN:"eyJUeXAiOiJKV1QiLCJBbGciOiJIUzI1NiIsIkN0eSI6IiJ9.eyJhdXRoIjp7Ik5hbWUiOiJhZG1pbiIsIlJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2ODMzNzEyODh9.JhusptrjlvIPzZGJDaLe-mlKU7tsemId8__nB57dJao"
 
 ###
 DELETE {{baseUrl}}/account/64561b23493102983a61ab59 HTTP/1.1
@@ -37,13 +39,28 @@ Content-Type: application/json
 
 {
     "username":"admin",
-    "password":"admin1"
+    "password":"admin123"
 }
+
+###
+POST {{baseUrl}}/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "username":"Donggala",
+    "password":"defaultpassword"
+}
+
+###
+GET {{baseUrl}}/destination HTTP/1.1
+Content-Type: application/json
+TOKEN:"eyJUeXAiOiJKV1QiLCJBbGciOiJIUzI1NiIsIkN0eSI6IiJ9.eyJhdXRoIjp7Ik5hbWUiOiJkb25nZ2FsYSIsIlJvbGUiOiJvcGVyYXRvciJ9LCJleHAiOjE2ODM5ODIxNzQsImlhdCI6MTY4Mzk4MjExNH0.AShcPLbUIztlnwf3IYqWTK_cf9XkIui-pWg4YnUSXxk"
+
 ###
 GET {{baseUrl}}/user/donggala/destinations HTTP/1.1
 
 ###
-GET {{baseUrl}}/user/sigi/destinations/6456376168883f2d510dc505 HTTP/1.1
+GET {{baseUrl}}/user/donggala/destinations/6456376168883f2d510dc505 HTTP/1.1
 
 ###
 GET {{baseUrl}}/regions HTTP/1.1

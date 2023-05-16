@@ -864,7 +864,6 @@ func TestAdminResetPasswordSuccess(t *testing.T) {
 	assert.Equal(t, "OK", responseBodyCreate["status"])
 	assert.Equal(t, "Success create new account", responseBodyCreate["data"])
 
-	//List of account
 	requestAccounts := httptest.NewRequest(http.MethodGet, "http://localhost:3000/api/v1/account", nil)
 	requestAccounts.Header.Add("TOKEN", token)
 	recorderAccounts := httptest.NewRecorder()

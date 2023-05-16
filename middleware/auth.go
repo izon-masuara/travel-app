@@ -19,14 +19,37 @@ func NewAuthMiddleware(handler http.Handler) *AuthMiddleware {
 }
 
 func (middleware *AuthMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PATCH ,PUT, DELETE, OPTIONS")
+
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	if r.URL.Path == "/" {
+		r.URL.Path += "api/v1/"
+	}
+
 	path := strings.Split(r.URL.Path, "/")
-	if path[3] == "login" || path[3] == "regions" {
+
+	if path[1] == "favicon.ico" {
+		return
+	} else if path[3] == "login" {
 		middleware.Handler.ServeHTTP(w, r)
 		return
 	} else if path[3] == "user" {
 		middleware.Handler.ServeHTTP(w, r)
 		return
+	} else if r.URL.Path == "/api/v1/regions" {
+		middleware.Handler.ServeHTTP(w, r)
+		return
+	} else if path[3] == "img" {
+		middleware.Handler.ServeHTTP(w, r)
+		return
 	}
+
 	token := r.Header.Get("TOKEN")
 	data, err := helper.ValidateToken(token)
 	if err != nil {
@@ -40,6 +63,7 @@ func (middleware *AuthMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Reque
 		helper.Response(w, webResponse)
 		return
 	}
+
 	ctx := context.WithValue(r.Context(), "auth", data)
 	middleware.Handler.ServeHTTP(w, r.WithContext(ctx))
 }

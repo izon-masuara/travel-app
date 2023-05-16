@@ -33,3 +33,10 @@ type Destination struct {
 	Facilities []Facility         `json:"facilities" bson:"facilities"`
 	Comments   []Comment          `json:"comments" bson:"comments"`
 }
+
+type DestinationResponse struct {
+	Id    primitive.ObjectID `json:"_id" bson:"_id"`
+	Title string             `json:"title" bson:"title"`
+	Date  time.Time          `json:"date" bson:"date"`
+	Rate  float64            `json:"rete" bson:"rate"`
+}

@@ -13,7 +13,7 @@ import (
 
 type DestinationRepository interface {
 	Save(ctx context.Context, db *mongo.Database, destination domain.DestinationCreate)
-	FindAll(ctx context.Context, db *mongo.Database) []domain.Destination
+	FindAll(ctx context.Context, db *mongo.Database) []domain.DestinationResponse
 	Update(ctx context.Context, db *mongo.Database, destination domain.DestinationUpdate, requestId string)
 	Destroy(ctx context.Context, db *mongo.Database, requestId string)
 	FindOne(ctx context.Context, db *mongo.Database, requestId string) domain.Destination
@@ -39,7 +39,7 @@ func (respository *DestinationRepositoryImpl) Save(ctx context.Context, db *mong
 
 }
 
-func (repository *DestinationRepositoryImpl) FindAll(ctx context.Context, db *mongo.Database) []domain.Destination {
+func (repository *DestinationRepositoryImpl) FindAll(ctx context.Context, db *mongo.Database) []domain.DestinationResponse {
 	jsonAuth := helper.InterfaceToJsonAuth(ctx)
 	if jsonAuth.Role != "operator" {
 		panic(exception.NewAuthError("UNAUTORIZED"))
@@ -47,9 +47,9 @@ func (repository *DestinationRepositoryImpl) FindAll(ctx context.Context, db *mo
 	cursor, err := db.Collection(jsonAuth.Name).Find(ctx, bson.D{})
 	helper.PanicIfError(err)
 	defer cursor.Close(ctx)
-	var result []domain.Destination
+	var result []domain.DestinationResponse
 	for cursor.Next(ctx) {
-		var row domain.Destination
+		var row domain.DestinationResponse
 		err := cursor.Decode(&row)
 		helper.PanicIfError(err)
 		result = append(result, row)
@@ -110,6 +110,11 @@ func (repository *DestinationRepositoryImpl) Destroy(ctx context.Context, db *mo
 	}
 	_, err = db.Collection(jsonAuth.Name).DeleteOne(ctx, bson.M{"_id": id})
 	helper.PanicIfError(err)
+	total, err := db.Collection(jsonAuth.Name).CountDocuments(ctx, bson.M{})
+	helper.PanicIfError(err)
+	if total < 1 {
+		db.Collection(jsonAuth.Name).Drop(ctx)
+	}
 	helper.RemoveFile(found.ImageFile)
 }
 

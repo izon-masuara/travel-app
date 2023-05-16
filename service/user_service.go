@@ -2,10 +2,13 @@ package service
 
 import (
 	"context"
+	"fmt"
+	"io/ioutil"
 	"kautsar/travel-app-api/entity/domain"
 	"kautsar/travel-app-api/entity/web"
 	"kautsar/travel-app-api/helper"
 	"kautsar/travel-app-api/repository"
+	"os"
 
 	"github.com/go-playground/validator"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -16,6 +19,7 @@ type UserService interface {
 	FindDestinationByRegion(ctx context.Context, requset string) []domain.Destination
 	FindOneDestinationByRegion(ctx context.Context, requestRegion string, requestDestination string) domain.Destination
 	FindAllRegions(ctx context.Context) []string
+	FindImage(imgName string) []byte
 }
 
 type UserServiceImpl struct {
@@ -58,4 +62,13 @@ func (service *UserServiceImpl) FindOneDestinationByRegion(ctx context.Context, 
 func (service *UserServiceImpl) FindAllRegions(ctx context.Context) []string {
 	regions := service.UserRepository.FindAllRegions(ctx, service.Db)
 	return regions
+}
+
+func (service *UserServiceImpl) FindImage(imgName string) []byte {
+	dir, err := os.Getwd()
+	helper.PanicIfError(err)
+	path := fmt.Sprintf("%s/public/%s", dir, imgName)
+	fileByte, err := ioutil.ReadFile(path)
+	helper.PanicIfError(err)
+	return fileByte
 }

@@ -3,6 +3,7 @@ package helper
 import (
 	"encoding/json"
 	"errors"
+	"time"
 
 	"github.com/robbert229/jwt"
 )
@@ -17,6 +18,7 @@ var algorithm = jwt.HmacSha256("secreteKey")
 func GenerateToken(jwtPayload *JwtPayload) string {
 	claims := jwt.NewClaim()
 	claims.Set("auth", jwtPayload)
+	claims.Set("exp", time.Now().Add(time.Minute*1).Unix())
 	token, err := algorithm.Encode(claims)
 	if err != nil {
 		PanicIfError(err)

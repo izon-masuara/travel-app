@@ -40,7 +40,6 @@ func (controller *OperatorControllerImpl) Create(w http.ResponseWriter, r *http.
 		Status: "OK",
 		Data:   operatorResponse,
 	}
-
 	helper.Response(w, webResponse)
 }
 

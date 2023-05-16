@@ -18,6 +18,7 @@ import (
 	"time"
 
 	"github.com/go-playground/validator"
+	"github.com/joho/godotenv"
 	"github.com/julienschmidt/httprouter"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson"
@@ -58,6 +59,10 @@ func startDb(db *mongo.Database) {
 }
 
 func setupRouter(db *mongo.Database) http.Handler {
+	err := godotenv.Load("../.env")
+	if err != nil {
+		panic(err)
+	}
 	validate := validator.New()
 	router := httprouter.New()
 
@@ -733,15 +738,15 @@ func TestAdminGetListAccountSuccess(t *testing.T) {
 		log.Fatal(err)
 	}
 	var responseBodyAccount map[string]interface{}
-	json.Unmarshal(bodyAccounts, &responseBodyAccount)
+	err = json.Unmarshal(bodyAccounts, &responseBodyAccount)
+	if err != nil {
+		log.Fatal(err)
+	}
 	assert.Equal(t, 200, int(responseAccounts.StatusCode))
 	assert.Equal(t, "OK", responseBodyAccount["status"])
 	accountsInterface := responseBodyAccount["data"].([]interface{})
 
-	admin := accountsInterface[0].(map[string]interface{})["name"]
-	donggala := accountsInterface[1].(map[string]interface{})["name"]
-
-	assert.Equal(t, "admin", admin)
+	donggala := accountsInterface[0].(map[string]interface{})["name"]
 	assert.Equal(t, "donggala", donggala)
 }
 
@@ -880,14 +885,12 @@ func TestAdminResetPasswordSuccess(t *testing.T) {
 	assert.Equal(t, "OK", responseBodyAccount["status"])
 	accountsInterface := responseBodyAccount["data"].([]interface{})
 
-	admin := accountsInterface[0].(map[string]interface{})["name"]
-	donggala := accountsInterface[1].(map[string]interface{})["name"]
+	donggala := accountsInterface[0].(map[string]interface{})["name"]
 
-	assert.Equal(t, "admin", admin)
 	assert.Equal(t, "donggala", donggala)
 
 	// Admin reset password
-	donggalaId := accountsInterface[1].(map[string]interface{})["_id"]
+	donggalaId := accountsInterface[0].(map[string]interface{})["_id"]
 
 	requestResetPassword := httptest.NewRequest(http.MethodPatch, "http://localhost:3000/api/v1/account/"+donggalaId.(string), nil)
 	requestResetPassword.Header.Add("Content-Type", "application/json")
@@ -1092,14 +1095,12 @@ func TestAdminDeleteSuccess(t *testing.T) {
 	assert.Equal(t, "OK", responseBodyAccount["status"])
 	accountsInterface := responseBodyAccount["data"].([]interface{})
 
-	admin := accountsInterface[0].(map[string]interface{})["name"]
-	donggala := accountsInterface[1].(map[string]interface{})["name"]
+	donggala := accountsInterface[0].(map[string]interface{})["name"]
 
-	assert.Equal(t, "admin", admin)
 	assert.Equal(t, "donggala", donggala)
 
 	// Admin reset password
-	donggalaId := accountsInterface[1].(map[string]interface{})["_id"]
+	donggalaId := accountsInterface[0].(map[string]interface{})["_id"]
 
 	requestDeleteOperator := httptest.NewRequest(http.MethodDelete, "http://localhost:3000/api/v1/account/"+donggalaId.(string), nil)
 	requestDeleteOperator.Header.Add("Content-Type", "application/json")

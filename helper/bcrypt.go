@@ -1,9 +1,19 @@
 package helper
 
-import "golang.org/x/crypto/bcrypt"
+import (
+	"os"
+	"strconv"
+
+	"golang.org/x/crypto/bcrypt"
+)
 
 func HashPassword(plaintext string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(plaintext), 14)
+	cost := os.Getenv("BYCRYPT_COST")
+	num, err := strconv.Atoi(cost)
+	if err != nil {
+		return "", err
+	}
+	bytes, err := bcrypt.GenerateFromPassword([]byte(plaintext), num)
 	return string(bytes), err
 }
 

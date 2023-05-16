@@ -3,6 +3,7 @@ package helper
 import (
 	"encoding/json"
 	"errors"
+	"os"
 	"time"
 
 	"github.com/robbert229/jwt"
@@ -13,7 +14,7 @@ type JwtPayload struct {
 	Role string
 }
 
-var algorithm = jwt.HmacSha256("secreteKey")
+var algorithm = jwt.HmacSha256(os.Getenv("JWT_KEY"))
 
 func GenerateToken(jwtPayload *JwtPayload) string {
 	claims := jwt.NewClaim()

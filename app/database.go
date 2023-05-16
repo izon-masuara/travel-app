@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"kautsar/travel-app-api/helper"
+	"os"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -10,12 +11,12 @@ import (
 
 func NewDb() *mongo.Database {
 	clientOptions := options.Client()
-	clientOptions.ApplyURI("mongodb://localhost:27017")
+	clientOptions.ApplyURI(os.Getenv("MONGO_URI"))
 	client, err := mongo.NewClient(clientOptions)
 	helper.PanicIfError(err)
 
 	err = client.Connect(context.TODO())
 	helper.PanicIfError(err)
 
-	return client.Database("travel_app_dev")
+	return client.Database(os.Getenv("travel_app_dev"))
 }

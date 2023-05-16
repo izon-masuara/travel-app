@@ -28,15 +28,26 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "id": {
-                                                "type": "string"
-                                            },
-                                            "name": {
-                                                "type": "string"
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -201,9 +212,13 @@
         },
         "/destinations": {
             "get": {
+                "security": [
+                    {
+                        "ApiAuth": []
+                    }
+                ],
                 "description": "List of destination",
                 "tags": [
-                    "User API",
                     "Operator API"
                 ],
                 "summary": "List of destination",
@@ -224,15 +239,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "type": "object",
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "string"
-                                                    },
-                                                    "name": {
-                                                        "type": "string"
-                                                    }
-                                                }
+                                                "$ref": "#/components/schemas/destination"
                                             }
                                         }
                                     }
@@ -255,9 +262,51 @@
                 "summary": "Create new destination",
                 "requestBody": {
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/destination"
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "date": {
+                                        "type": "string"
+                                    },
+                                    "long": {
+                                        "type": "string"
+                                    },
+                                    "lat": {
+                                        "type": "string"
+                                    },
+                                    "image_file": {
+                                        "type": "object",
+                                        "properties": {
+                                            "file": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "number"
+                                                }
+                                            },
+                                            "header": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "filename": {
+                                                        "type": "string"
+                                                    },
+                                                    "size": {
+                                                        "type": "integer"
+                                                    },
+                                                    "content-type": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "text": {
+                                        "type": "string"
+                                    }
+                                }
                             }
                         }
                     }
@@ -278,9 +327,14 @@
         },
         "/destinations/{destinationId}": {
             "get": {
+                "security": [
+                    {
+                        "ApiAuth": []
+                    }
+                ],
                 "description": "Get destination by id",
                 "tags": [
-                    "User API"
+                    "Operator API"
                 ],
                 "summary": "Get destination by id",
                 "parameters": [
@@ -387,6 +441,121 @@
                 }
             }
         },
+        "/login": {
+            "post": {
+                "description": "Login API",
+                "tags": [
+                    "General"
+                ],
+                "summary": "Login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success Login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number",
+                                            "example": 200
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "OK"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "token": {
+                                                    "type": "string",
+                                                    "example": "JWT token"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number",
+                                            "example": 400
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "BAD REQUEST"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Validation error"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthentication",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number",
+                                            "example": 401
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "UNAUTHORIZED"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Username or password is wrong"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/regions": {
             "get": {
                 "description": "List of region",
@@ -421,6 +590,104 @@
                                                     }
                                                 }
                                             }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{regionId}/destinations": {
+            "get": {
+                "description": "List of destinations in region",
+                "tags": [
+                    "User API"
+                ],
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "regionId",
+                        "in": "path",
+                        "description": "Region Id",
+                        "required": true
+                    }
+                ],
+                "summary": "List of destinations in region",
+                "responses": {
+                    "200": {
+                        "description": "Success get list destination in region",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/destination"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{regionId}/destination/{destinationId}": {
+            "get": {
+                "description": "Get destination form region id and destination id",
+                "tags": [
+                    "User API"
+                ],
+                "summary": "Get destination form region id and destination id",
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "regionId",
+                        "description": "Region Id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "destinationId",
+                        "description": "Destination Id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get destination by id in region by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/destination"
                                         }
                                     }
                                 }
@@ -470,18 +737,7 @@
                         "type": "string"
                     },
                     "image_file": {
-                        "type": "object",
-                        "properties": {
-                            "title": {
-                                "type": "string"
-                            },
-                            "mimetype": {
-                                "type": "string"
-                            },
-                            "size": {
-                                "type": "number"
-                            }
-                        }
+                        "type": "string"
                     },
                     "location": {
                         "type": "object",

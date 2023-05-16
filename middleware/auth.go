@@ -34,7 +34,7 @@ func (middleware *AuthMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Reque
 
 	path := strings.Split(r.URL.Path, "/")
 
-	if r.URL.Path == "/api/v1/favicon.ico" {
+	if path[0] == "favicon.ico" {
 		return
 	} else if path[3] == "login" {
 		middleware.Handler.ServeHTTP(w, r)

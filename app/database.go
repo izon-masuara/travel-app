@@ -18,5 +18,5 @@ func NewDb() *mongo.Database {
 	err = client.Connect(context.TODO())
 	helper.PanicIfError(err)
 
-	return client.Database(os.Getenv("travel_app_dev"))
+	return client.Database(os.Getenv("DB_NAME"))
 }

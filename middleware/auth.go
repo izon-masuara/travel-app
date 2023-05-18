@@ -5,7 +5,6 @@ import (
 	"kautsar/travel-app-api/entity/web"
 	"kautsar/travel-app-api/helper"
 	"net/http"
-	"strings"
 )
 
 type AuthMiddleware struct {
@@ -28,29 +27,13 @@ func (middleware *AuthMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	if r.URL.Path == "/" {
-		r.URL.Path += "api/v1/"
-	}
-
-	path := strings.Split(r.URL.Path, "/")
-
-	if path[0] == "favicon.ico" {
-		return
-	} else if path[3] == "login" {
-		middleware.Handler.ServeHTTP(w, r)
-		return
-	} else if path[3] == "user" {
-		middleware.Handler.ServeHTTP(w, r)
-		return
-	} else if r.URL.Path == "/api/v1/regions" {
-		middleware.Handler.ServeHTTP(w, r)
-		return
-	} else if path[3] == "img" {
-		middleware.Handler.ServeHTTP(w, r)
-		return
-	}
-
 	token := r.Header.Get("TOKEN")
+
+	if token == "" {
+		middleware.Handler.ServeHTTP(w, r)
+		return
+	}
+
 	data, err := helper.ValidateToken(token)
 	if err != nil {
 		w.Header().Set("Content-type", "application/json")

@@ -1,0 +1,5 @@
+test
+manual_test_api.http
+README.md
+/public/*
+.env

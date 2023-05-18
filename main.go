@@ -35,7 +35,7 @@ func main() {
 	router.PanicHandler = exception.ErrorHandler
 
 	server := http.Server{
-		Addr:    os.Getenv("IP_ADDRESS"),
+		Addr:    os.Getenv("PORT"),
 		Handler: middleware.NewAuthMiddleware(router),
 	}
 

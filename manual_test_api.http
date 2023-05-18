@@ -54,7 +54,7 @@ Content-Type: application/json
 ###
 GET {{baseUrl}}/destination HTTP/1.1
 Content-Type: application/json
-TOKEN:"eyJUeXAiOiJKV1QiLCJBbGciOiJIUzI1NiIsIkN0eSI6IiJ9.eyJhdXRoIjp7Ik5hbWUiOiJkb25nZ2FsYSIsIlJvbGUiOiJvcGVyYXRvciJ9LCJleHAiOjE2ODM5ODIxNzQsImlhdCI6MTY4Mzk4MjExNH0.AShcPLbUIztlnwf3IYqWTK_cf9XkIui-pWg4YnUSXxk"
+TOKEN:"eyJUeXAiOiJKV1QiLCJBbGciOiJIUzI1NiIsIkN0eSI6IiJ9.eyJhdXRoIjp7Ik5hbWUiOiJEb25nZ2FsYSIsIlJvbGUiOiJvcGVyYXRvciJ9LCJleHAiOjE2ODQzNzM1ODAsImlhdCI6MTY4NDM3MzUyMH0.LEengUL0CyU9W4oFbUAojyPPjs2ADSK6FzAzVH8wbHA"
 
 ###
 GET {{baseUrl}}/user/donggala/destinations HTTP/1.1

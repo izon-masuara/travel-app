@@ -1,14 +1,16 @@
 package web
 
 import (
+	"kautsar/travel-app-api/entity/domain"
 	"time"
 )
 
 type DestinationCreateRequest struct {
-	Title     string    `validate:"required" json:"title" form:"title"`
-	Date      time.Time `validate:"required" json:"date" form:"date"`
-	Long      string    `validate:"required" json:"long" form:"long"`
-	Lat       string    `validate:"required" json:"lat" form:"lat"`
-	ImageFile string    `validate:"required" json:"image_file" form:"image_file"`
-	Text      string    `validate:"required" json:"text" form:"text"`
+	Title      string            `validate:"required" form:"title"`
+	Date       time.Time         `validate:"required" form:"date"`
+	Long       string            `validate:"required" form:"long"`
+	Lat        string            `validate:"required" form:"lat"`
+	ImageFile  string            `validate:"required" form:"image_file"`
+	Text       string            `validate:"required" form:"text"`
+	Facilities []domain.Facility `validate:"required"`
 }

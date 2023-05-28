@@ -20,6 +20,7 @@ type UserService interface {
 	FindOneDestinationByRegion(ctx context.Context, requestRegion string, requestDestination string) domain.Destination
 	FindAllRegions(ctx context.Context) []string
 	FindImage(imgName string) []byte
+	Search(ctx context.Context) []domain.Search
 }
 
 type UserServiceImpl struct {
@@ -71,4 +72,9 @@ func (service *UserServiceImpl) FindImage(imgName string) []byte {
 	fileByte, err := ioutil.ReadFile(path)
 	helper.PanicIfError(err)
 	return fileByte
+}
+
+func (service *UserServiceImpl) Search(ctx context.Context) []domain.Search {
+	data := service.UserRepository.Search(ctx, service.Db)
+	return data
 }

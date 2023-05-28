@@ -27,16 +27,27 @@ func NewDestinationRepository() DestinationRepository {
 }
 
 func (respository *DestinationRepositoryImpl) Save(ctx context.Context, db *mongo.Database, destination domain.DestinationCreate) {
+
+	// solve this problem using transaction
 	jsonAuth := helper.InterfaceToJsonAuth(ctx)
 	if jsonAuth.Role != "operator" {
 		panic(exception.NewAuthError("UNAUTORIZED"))
 	}
-	_, err := db.Collection(jsonAuth.Name).InsertOne(ctx, destination)
+	result, err := db.Collection(jsonAuth.Name).InsertOne(ctx, destination)
 	if err != nil {
 		helper.RemoveFile(destination.ImageFile)
 		helper.PanicIfError(err)
 	}
 
+	_, err = db.Collection("search").InsertOne(ctx, domain.Search{
+		IdDest: result.InsertedID.(primitive.ObjectID),
+		Title:  destination.Title,
+		Name:   jsonAuth.Name,
+	})
+	if err != nil {
+		helper.RemoveFile(destination.ImageFile)
+		helper.PanicIfError(err)
+	}
 }
 
 func (repository *DestinationRepositoryImpl) FindAll(ctx context.Context, db *mongo.Database) []domain.DestinationResponse {
@@ -101,6 +112,9 @@ func (repository *DestinationRepositoryImpl) Destroy(ctx context.Context, db *mo
 	}
 	id, err := primitive.ObjectIDFromHex(requestId)
 	helper.PanicIfError(err)
+
+	// solve this problem using transaction
+
 	var found domain.Destination
 	err = db.Collection(jsonAuth.Name).FindOne(ctx, bson.M{
 		"_id": id,
@@ -109,6 +123,8 @@ func (repository *DestinationRepositoryImpl) Destroy(ctx context.Context, db *mo
 		panic(exception.NewNotFoundError("Data not found"))
 	}
 	_, err = db.Collection(jsonAuth.Name).DeleteOne(ctx, bson.M{"_id": id})
+	helper.PanicIfError(err)
+	_, err = db.Collection("search").DeleteOne(ctx, bson.M{"name": found.Title})
 	helper.PanicIfError(err)
 	total, err := db.Collection(jsonAuth.Name).CountDocuments(ctx, bson.M{})
 	helper.PanicIfError(err)

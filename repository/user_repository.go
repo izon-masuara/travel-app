@@ -16,6 +16,7 @@ type UserRepository interface {
 	FindDestinationByRegion(ctx context.Context, db *mongo.Database, request string) []domain.Destination
 	FindOneDestinationByRegion(ctx context.Context, db *mongo.Database, requestRegion string, requestDestination string) domain.Destination
 	FindAllRegions(ctx context.Context, db *mongo.Database) []string
+	Search(ctx context.Context, db *mongo.Database) []domain.Search
 }
 
 type UserRepositoryImpl struct {
@@ -77,9 +78,23 @@ func (repository *UserRepositoryImpl) FindAllRegions(ctx context.Context, db *mo
 	helper.PanicIfError(err)
 	var filerRegions []string
 	for _, v := range regions {
-		if v != "account" {
+		if v != "account" && v != "search" {
 			filerRegions = append(filerRegions, v)
 		}
 	}
 	return filerRegions
+}
+
+func (repository *UserRepositoryImpl) Search(ctx context.Context, db *mongo.Database) []domain.Search {
+	cursor, err := db.Collection("search").Find(ctx, bson.D{})
+	helper.PanicIfError(err)
+	defer cursor.Close(ctx)
+	var result []domain.Search
+	for cursor.Next(ctx) {
+		var row domain.Search
+		err := cursor.Decode(&row)
+		helper.PanicIfError(err)
+		result = append(result, row)
+	}
+	return result
 }

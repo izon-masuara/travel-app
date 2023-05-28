@@ -1,0 +1,149 @@
+[
+    {
+        "palu": [
+            "palu",
+            "sigi",
+            "donggala",
+            "poso",
+            "parigi",
+            "buol",
+            "toli-toli"
+        ],
+        "luwuk": [
+            "baggai",
+            "baggai kepulauan",
+            "banggai laut",
+            "touna"
+        ],
+        "morowali": [
+            "morowali",
+            "morowali utara"
+        ],
+        "pantoloan": [
+            "pantoloan"
+        ]
+    },
+    {
+        "jakarta": {
+            "udara": {
+                "palu": [
+                    {
+                        "namabandara-palu": "1.600.000-2.500.000"
+                    },
+                    {
+                        "namabandara2hlp-sis": "1.900.000-2.500.000"
+                    }
+                ],
+                "luwuk": [
+                    {
+                        "namabandara-palu": "1.600.000-2.500.000"
+                    },
+                    {
+                        "namabandara2hlp-sis": "2.264.400-3.000.000"
+                    }
+                ],
+                "morowali": [
+                    {
+                        "namabandara-palu": "2.140.700-3.000.000"
+                    },
+                    {
+                        "namabandara2hlp-sis": "2.264.400-3.000.000"
+                    }
+                ]
+            },
+            "laut": {
+                "pantoloan": {
+                    "namapelabuhan-pantoloan": "515.000-1.000.000"
+                }
+            }
+        },
+        "bandung": {
+            "udara": {
+                "palu": [
+                    {
+                        "namabandara-palu": "2.600.000-3.500.000"
+                    }
+                ],
+                "luwuk": [
+                    {
+                        "namabandara-palu": "3.000.000-4.000.000"
+                    }
+                ],
+                "morowali": [
+                    {
+                        "namabandara-palu": "3.500.039-4.000.000"
+                    }
+                ]
+            }
+        },
+        "yogyakarta": {
+            "udara": {
+                "palu": [
+                    {
+                        "namabandara-palu": "2.600.000-3.500.000"
+                    }
+                ],
+                "luwuk": [
+                    {
+                        "namabandara-palu": "3.000.000-4.000.000"
+                    }
+                ],
+                "morowali": [
+                    {
+                        "namabandara-palu": "3.500.039-4.000.000"
+                    }
+                ]
+            }
+        },
+        "makassar": {
+            "udara": {
+                "palu": [
+                    {
+                        "namabandara-palu": "1.200.000-2.000.000"
+                    }
+                ],
+                "luwuk": [
+                    {
+                        "namabandara-palu": "1.600.000-2.500.000"
+                    }
+                ],
+                "morowali": [
+                    {
+                        "namabandara-palu": "2.140.700-3.000.000"
+                    }
+                ]
+            },
+            "laut": {
+                "pantoloan": {
+                    "namapelabuhan-pantoloan": "215.000-500.000"
+                }
+            },
+            "darat": {
+                "palu": [
+                    {
+                        "name": "travel a",
+                        "harga": "400.000-800.000",
+                        "perkiraan_waktu": "23 jam"
+                    },
+                    {
+                        "name": "travel b",
+                        "harga": "500.000-800.000",
+                        "perkiraan_waktu": "1 hari 2jam"
+                    }
+                ],
+                "luwuk": [
+                    {
+                        "name": "travel b",
+                        "harga": "300.000-800.000",
+                        "perkiraan_waktu": "22 jam"
+                    },
+                    {
+                        "name": "travel c",
+                        "harga": "400.000-800.000",
+                        "perkiraan_waktu": "21 jam"
+                    }
+                ]
+            }
+        }
+    }
+]

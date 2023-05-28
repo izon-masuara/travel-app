@@ -29,7 +29,7 @@ import (
 
 func setupTestDb() *mongo.Database {
 	clientOptions := options.Client()
-	clientOptions.ApplyURI("mongodb://localhost:27018")
+	clientOptions.ApplyURI("mongodb://localhost:27017")
 	client, err := mongo.NewClient(clientOptions)
 	helper.PanicIfError(err)
 	ctx, cancel := context.WithTimeout(context.TODO(), 60*time.Second)

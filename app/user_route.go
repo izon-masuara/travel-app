@@ -20,6 +20,7 @@ func RegisterUserRoutes(router *httprouter.Router, db *mongo.Database, validate 
 	router.GET("/api/v1/user/:region_name/destinations", userController.FindDestinationByRegion)
 	router.GET("/api/v1/user/:region_name/destinations/:destination_id", userController.FindOneDestinationByRegion)
 	router.GET("/api/v1/img/:image_file", userController.FindImage)
+	router.GET("/api/v1/search", userController.Search)
 
 	router.POST("/api/v1/login", userController.Login)
 }

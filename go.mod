@@ -23,6 +23,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/robbert229/jwt v2.0.0+incompatible // indirect
 	github.com/stretchr/testify v1.8.2
+	github.com/subosito/gotenv v1.4.2
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.1.1 // indirect
 	github.com/xdg-go/stringprep v1.0.3 // indirect

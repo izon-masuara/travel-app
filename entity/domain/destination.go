@@ -12,9 +12,9 @@ type Location struct {
 }
 
 type Facility struct {
-	Name     string   `json:"name" bson:"name"`
-	Location Location `json:"location" bson:"location"`
-	Type     string   `json:"type" bson:"type"`
+	Name        string `validate:"required" json:"name"`
+	Description string `validate:"required" json:"desc"`
+	Category    string `validate:"required" json:"category"`
 }
 
 type Comment struct {

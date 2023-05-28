@@ -1,4 +1,5 @@
 @baseUrl = http://localhost:3000/api/v1
+# @baseUrl = http://192.168.1.10:3000/api/v1
 
 GET {{baseUrl}}/account HTTP/1.1
 TOKEN:"eyJUeXAiOiJKV1QiLCJBbGciOiJIUzI1NiIsIkN0eSI6IiJ9.eyJhdXRoIjp7Ik5hbWUiOiJhZG1pbiIsIlJvbGUiOiJhZG1pbiJ9LCJpYXQiOjE2ODMzNzEyODh9.JhusptrjlvIPzZGJDaLe-mlKU7tsemId8__nB57dJao"
@@ -57,10 +58,13 @@ Content-Type: application/json
 TOKEN:"eyJUeXAiOiJKV1QiLCJBbGciOiJIUzI1NiIsIkN0eSI6IiJ9.eyJhdXRoIjp7Ik5hbWUiOiJEb25nZ2FsYSIsIlJvbGUiOiJvcGVyYXRvciJ9LCJleHAiOjE2ODQzNzM1ODAsImlhdCI6MTY4NDM3MzUyMH0.LEengUL0CyU9W4oFbUAojyPPjs2ADSK6FzAzVH8wbHA"
 
 ###
-GET {{baseUrl}}/user/donggala/destinations HTTP/1.1
+GET {{baseUrl}}/user/Donggala/destinations HTTP/1.1
 
 ###
 GET {{baseUrl}}/user/donggala/destinations/6456376168883f2d510dc505 HTTP/1.1
 
 ###
 GET {{baseUrl}}/regions HTTP/1.1
+
+###
+GET {{baseUrl}}/search HTTP/1.1

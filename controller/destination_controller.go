@@ -1,7 +1,9 @@
 package controller
 
 import (
+	"encoding/json"
 	"fmt"
+	"kautsar/travel-app-api/entity/domain"
 	"kautsar/travel-app-api/entity/web"
 	"kautsar/travel-app-api/helper"
 	"kautsar/travel-app-api/service"
@@ -43,17 +45,24 @@ func (controller *DestinationControllerImpl) Create(w http.ResponseWriter, r *ht
 	}()
 	helper.PanicIfError(err)
 
-	filename := fmt.Sprintf("%v-%v-%s", time.Now().Nanosecond(), rand.Intn(20), header.Filename)
+	random := rand.Intn(2)
+	filename := fmt.Sprintf("%v-%v%v-%s", time.Now().Nanosecond(), random, rand.Intn(4), header.Filename)
 
 	helper.SaveFile(filename, file)
 
+	bit := []byte(r.FormValue("facilities"))
+	var facilites []domain.Facility
+	err = json.Unmarshal(bit, &facilites)
+	helper.PanicIfError(err)
+
 	request := web.DestinationCreateRequest{
-		Title:     r.FormValue("title"),
-		Date:      time.Now(),
-		Long:      r.FormValue("long"),
-		Lat:       r.FormValue("lat"),
-		Text:      r.FormValue("text"),
-		ImageFile: filename,
+		Title:      r.FormValue("title"),
+		Date:       time.Now(),
+		Long:       r.FormValue("long"),
+		Lat:        r.FormValue("lat"),
+		Text:       r.FormValue("text"),
+		Facilities: facilites,
+		ImageFile:  filename,
 	}
 
 	destniationResponse := controller.DestinationService.Create(r.Context(), request)

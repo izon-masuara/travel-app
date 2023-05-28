@@ -51,7 +51,7 @@ func (service *DestinationServiceImpl) Create(ctx context.Context, request web.D
 		ImageFile:  request.ImageFile,
 		Text:       request.Text,
 		Rate:       0,
-		Facilities: make([]domain.Facility, 0),
+		Facilities: request.Facilities,
 		Comments:   make([]domain.Comment, 0),
 	}
 

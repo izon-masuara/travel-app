@@ -6,4 +6,5 @@ type OperatorSchema struct {
 	Id       primitive.ObjectID `json:"_id" bson:"_id"`
 	Name     string             `json:"name" bson:"name"`
 	Username string             `json:"username" bson:"username"`
+	Position [][]Coordinate     `json:"position" bson:"position"`
 }

@@ -13,7 +13,9 @@ func NewDb() *mongo.Database {
 	clientOptions := options.Client()
 	clientOptions.ApplyURI(os.Getenv("MONGO_URI"))
 	client, err := mongo.NewClient(clientOptions)
-	helper.PanicIfError(err)
+	if err != nil {
+		panic(err)
+	}
 
 	err = client.Connect(context.TODO())
 	helper.PanicIfError(err)

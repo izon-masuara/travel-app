@@ -14,3 +14,8 @@ type Account struct {
 	Role     string             `json:"role"`
 	Password string             `json:"password" bson:"password"`
 }
+
+type LoginResponse struct {
+	Token string `json:"token"`
+	Role  string `json:"role"`
+}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"kautsar/travel-app-api/app"
 	"kautsar/travel-app-api/exception"
 	"kautsar/travel-app-api/helper"
@@ -41,4 +42,5 @@ func main() {
 
 	err = server.ListenAndServe()
 	helper.PanicIfError(err)
+	fmt.Println("app running")
 }

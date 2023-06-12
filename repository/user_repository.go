@@ -12,7 +12,7 @@ import (
 )
 
 type UserRepository interface {
-	Login(ctx context.Context, db *mongo.Database, request domain.Login) string
+	Login(ctx context.Context, db *mongo.Database, request domain.Login) domain.LoginResponse
 	FindDestinationByRegion(ctx context.Context, db *mongo.Database, request string) []domain.Destination
 	FindOneDestinationByRegion(ctx context.Context, db *mongo.Database, requestRegion string, requestDestination string) domain.Destination
 	FindAllRegions(ctx context.Context, db *mongo.Database) []string
@@ -26,7 +26,7 @@ func NewUserRepository() UserRepository {
 	return &UserRepositoryImpl{}
 }
 
-func (repository *UserRepositoryImpl) Login(ctx context.Context, db *mongo.Database, request domain.Login) string {
+func (repository *UserRepositoryImpl) Login(ctx context.Context, db *mongo.Database, request domain.Login) domain.LoginResponse {
 	var found domain.Account
 	err := db.Collection("account").FindOne(ctx, bson.M{
 		"username": request.Username,
@@ -34,16 +34,17 @@ func (repository *UserRepositoryImpl) Login(ctx context.Context, db *mongo.Datab
 	if err != nil {
 		panic(exception.NewAuthError("Username or password is wrong"))
 	}
-	if found.Role != "admin" {
-		if !helper.DecribePassword(request.Passowrd, found.Password) {
-			panic(exception.NewAuthError("Username or password is wrong"))
-		}
+	if !helper.DecribePassword(request.Passowrd, found.Password) {
+		panic(exception.NewAuthError("Username or password is wrong"))
 	}
 	token := helper.GenerateToken(&helper.JwtPayload{
 		Name: found.Name,
 		Role: found.Role,
 	})
-	return token
+	return domain.LoginResponse{
+		Token: token,
+		Role:  found.Role,
+	}
 }
 
 func (repository *UserRepositoryImpl) FindDestinationByRegion(ctx context.Context, db *mongo.Database, request string) []domain.Destination {

@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"kautsar/travel-app-api/entity/domain"
 	"kautsar/travel-app-api/entity/web"
 	"kautsar/travel-app-api/helper"
@@ -36,10 +37,18 @@ func (service *OperatorServiceImpl) Create(ctx context.Context, request web.Oper
 	err := service.validate.Struct(request)
 	helper.PanicIfError(err)
 
+	bit, err := json.Marshal(request.Position)
+	helper.PanicIfError(err)
+
+	var markers [][]domain.Coordinate
+	err = json.Unmarshal(bit, &markers)
+	helper.PanicIfError(err)
+
 	operatorPayload := domain.OperatorCreate{
 		Name:     request.Name,
 		Username: request.Username,
 		Password: request.Password,
+		Position: markers,
 	}
 
 	service.OperatorRepository.Save(ctx, service.Db, operatorPayload)

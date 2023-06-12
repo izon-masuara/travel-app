@@ -15,7 +15,7 @@ import (
 )
 
 type UserService interface {
-	Login(ctx context.Context, requset web.LoginRequest) string
+	Login(ctx context.Context, requset web.LoginRequest) domain.LoginResponse
 	FindDestinationByRegion(ctx context.Context, requset string) []domain.Destination
 	FindOneDestinationByRegion(ctx context.Context, requestRegion string, requestDestination string) domain.Destination
 	FindAllRegions(ctx context.Context) []string
@@ -37,7 +37,7 @@ func NewUserService(userRespository repository.UserRepository, db *mongo.Databas
 	}
 }
 
-func (service *UserServiceImpl) Login(ctx context.Context, request web.LoginRequest) string {
+func (service *UserServiceImpl) Login(ctx context.Context, request web.LoginRequest) domain.LoginResponse {
 	err := service.Validate.Struct(request)
 	helper.PanicIfError(err)
 

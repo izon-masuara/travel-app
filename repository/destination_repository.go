@@ -124,7 +124,7 @@ func (repository *DestinationRepositoryImpl) Destroy(ctx context.Context, db *mo
 	}
 	_, err = db.Collection(jsonAuth.Name).DeleteOne(ctx, bson.M{"_id": id})
 	helper.PanicIfError(err)
-	_, err = db.Collection("search").DeleteOne(ctx, bson.M{"name": found.Title})
+	_, err = db.Collection("search").DeleteOne(ctx, bson.M{"title": found.Title})
 	helper.PanicIfError(err)
 	total, err := db.Collection(jsonAuth.Name).CountDocuments(ctx, bson.M{})
 	helper.PanicIfError(err)

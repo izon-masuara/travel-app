@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func NewDb() *mongo.Database {
+func NewMongo() *mongo.Database {
 	clientOptions := options.Client()
 	clientOptions.ApplyURI(os.Getenv("MONGO_URI"))
 	client, err := mongo.NewClient(clientOptions)

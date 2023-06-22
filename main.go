@@ -20,18 +20,22 @@ func main() {
 	err := godotenv.Load()
 	helper.PanicIfError(err)
 
-	db := app.NewDb()
+	mongoDb := app.NewMongo()
+	mysqlDb := app.NewMysql()
 	validate := validator.New()
 	router := httprouter.New()
 
-	defer db.Client().Disconnect(context.Background())
+	defer mongoDb.Client().Disconnect(context.Background())
+	defer mysqlDb.Close()
 
 	//user
-	app.RegisterUserRoutes(router, db, validate)
+	app.RegisterUserRoutes(router, mongoDb, validate)
 	// operator
-	app.RegisterAdminRoutes(router, db, validate)
+	app.RegisterAdminRoutes(router, mongoDb, validate)
 	// destination
-	app.RegisterDestinationRoutes(router, db, validate)
+	app.RegisterDestinationRoutes(router, mongoDb, validate)
+	// Tiket
+	app.RegisterTiketRoutes(router, mysqlDb)
 
 	router.PanicHandler = exception.ErrorHandler
 

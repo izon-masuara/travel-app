@@ -31,6 +31,7 @@ func (controller *OperatorControllerImpl) Create(w http.ResponseWriter, r *http.
 	decoder := json.NewDecoder(r.Body)
 
 	operatorCreateRequest := web.OperatorCreateRequest{}
+
 	err := decoder.Decode(&operatorCreateRequest)
 	helper.PanicIfError(err)
 

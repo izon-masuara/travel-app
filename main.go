@@ -41,6 +41,8 @@ func main() {
 	}
 
 	err = server.ListenAndServe()
-	helper.PanicIfError(err)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println("app running")
 }

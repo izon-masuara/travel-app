@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"kautsar/travel-app-api/helper"
 	"os"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -18,7 +17,9 @@ func NewDb() *mongo.Database {
 	}
 
 	err = client.Connect(context.TODO())
-	helper.PanicIfError(err)
+	if err != nil {
+		panic(err)
+	}
 
 	return client.Database(os.Getenv("DB_NAME"))
 }
